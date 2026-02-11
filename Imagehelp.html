@@ -5,6 +5,7 @@
     <title>Image Help</title>
   <link rel="icon" type="image/x-icon" href="https://lh3.googleusercontent.com/u/0/d/1EfK2jzelTKWItaOta2wjk6hq9PP9MV__">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -77,6 +78,23 @@
             padding: 12px;
             border-radius: 16px;
             font-size: 13px;
+            margin-top: 10px;
+        }
+
+        /* Responsive Image */
+        .image-slot {
+            width: 100%;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            margin-top: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .image-slot img {
+            width: 100%;
+            height: auto; /* Flexible height */
+            display: block;
+            object-fit: cover;
         }
 
         /* Floating bottom back button */
@@ -102,9 +120,15 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             cursor: pointer;
             -webkit-tap-highlight-color: transparent;
+            transition: 0.2s ease;
+        }
+
+        .back-btn:active {
+            transform: scale(0.95);
         }
     </style>
 </head>
+
 <body>
 
 <div class="card">
@@ -126,6 +150,12 @@
         These images are intentionally restricted and not public.
         Without proper access, they will remain hidden.
     </div>
+
+    <!-- Responsive Image -->
+    <div class="image-slot">
+        <img src="https://lh3.googleusercontent.com/u/0/d/1gdi5nVCM-XCYPOmBbME9PjoWWYt73RGr" alt="Guide Example">
+    </div>
+
 </div>
 
 <!-- Floating Back Button -->
