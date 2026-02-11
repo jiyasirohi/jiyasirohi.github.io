@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Help</title>
+  <link rel="icon" type="image/x-icon" href="https://lh3.googleusercontent.com/u/0/d/1EfK2jzelTKWItaOta2wjk6hq9PP9MV__">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-color: #ffffff;
+            --border-color: #f1f5f9;
+            --icon-color: #ec4899;
+            --text-color: #1e293b;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #121212;
+                --card-color: #1e1e26;
+                --border-color: #2d2d39;
+                --icon-color: #f472b6;
+                --text-color: #f1f5f9;
+            }
+        }
+
+        body {
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .card {
+            max-width: 450px;
+            width: 100%;
+            background: var(--card-color);
+            border-radius: 2.5rem;
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            margin-bottom: 100px; /* space for floating button */
+            color: var(--text-color);
+        }
+
+        h1 {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        ul {
+            font-size: 14px;
+            padding-left: 18px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .highlight {
+            background: rgba(236,72,153,0.1);
+            padding: 12px;
+            border-radius: 16px;
+            font-size: 13px;
+        }
+
+        /* Floating bottom back button */
+        .bottom-nav {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+        }
+
+        .back-btn {
+            background-color: var(--card-color);
+            border: 1px solid var(--border-color);
+            color: var(--icon-color);
+            width: 60px;
+            height: 60px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Image Not Showing? 📸</h1>
+
+    <p>
+        Some images on this website are hosted privately on Google Drive.
+        If an image does not appear, please follow these steps:
+    </p>
+
+    <ul>
+        <li>✔ Make sure you are logged into the correct Google account.</li>
+        <li>✔ That Google account must have permission access.</li>
+        <li>✔ Enable third-party cookies in your browser settings.</li>
+        <li>✔ Refresh the page after logging in.</li>
+    </ul>
+
+    <div class="highlight">
+        These images are intentionally restricted and not public.
+        Without proper access, they will remain hidden.
+    </div>
+</div>
+
+<!-- Floating Back Button -->
+<div class="bottom-nav">
+    <button onclick="window.history.back()" class="back-btn">
+        <i class="fa-solid fa-chevron-left"></i>
+    </button>
+</div>
+
+</body>
+</html>
