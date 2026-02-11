@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>About This Website</title>
+  <link rel="icon" type="image/x-icon" href="https://lh3.googleusercontent.com/u/0/d/1EfK2jzelTKWItaOta2wjk6hq9PP9MV__">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-color: #ffffff;
+            --border-color: #f1f5f9;
+            --icon-color: #ec4899;
+            --text-color: #1e293b;
+            --code-bg: #f1f5f9;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #121212;
+                --card-color: #1e1e26;
+                --border-color: #2d2d39;
+                --icon-color: #f472b6;
+                --text-color: #f1f5f9;
+                --code-bg: #2d2d39;
+            }
+        }
+
+        body {
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 450px;
+            background-color: var(--card-color);
+            border: 1px solid var(--border-color);
+            border-radius: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            padding: 25px;
+            margin-bottom: 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            color: var(--text-color);
+        }
+
+        .block-label {
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.6;
+            margin-bottom: 8px;
+        }
+
+        .content-text {
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .image-slot {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 1.5rem;
+            overflow: hidden;
+        }
+
+        .image-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .back-btn {
+            background-color: var(--card-color);
+            border: 1px solid var(--border-color);
+            color: var(--icon-color);
+            width: 60px;
+            height: 60px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+
+        <div>
+            <div class="block-label">About This Website</div>
+            <div class="content-text">
+                This is not just a website.  
+                It’s a private digital space created specially for <strong>Jiya Sirohi</strong>.  
+                A small world where memories, emotions, and moments are kept safe.
+            </div>
+        </div>
+
+        <div>
+            <div class="block-label">Why It Exists</div>
+            <div class="content-text">
+                In a world where everything disappears — chats, stories, and posts —  
+                I wanted to create something permanent.  
+                Something meaningful.  
+                Something only for her.
+            </div>
+        </div>
+
+        <div>
+            <div class="block-label">Hidden Sections</div>
+            <div class="content-text">
+                🔐 Hidden Text Section – A personal message written only for Jiya.<br><br>
+                📸 Hidden Memory Section – Special photos and memories stored safely.<br><br>
+                💬 Hidden Chat Receiver – A private space where she can send messages directly.<br><br>
+                😊 Hidden Reaction Bar – A simple way for her to share her mood.
+            </div>
+        </div>
+
+        <div>
+            <div class="block-label">Password Protection</div>
+            <div class="content-text">
+                Not everything beautiful needs to be public.  
+                These sections are locked and can only be unlocked with a password.  
+                If you don’t have it, the door stays closed.
+            </div>
+        </div>
+
+        <div>
+            <div class="block-label">For Jiya</div>
+            <div class="content-text">
+                If you’re reading this — just know this wasn’t made randomly.  
+                It was made with care, intention, and appreciation.  
+                Not everyone gets a website made for them.  
+                But you did.
+            </div>
+        </div>
+
+        <div class="image-slot">
+            <img src="https://lh3.googleusercontent.com/u/0/d/1wJpaoMSysQHaRHW1ZF_pBxNzK7RuhnDQ" alt="Memory">
+        </div>
+
+    </div>
+
+    <div class="bottom-nav">
+        <button onclick="window.history.back()" class="back-btn">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+    </div>
+
+</body>
+</html>
