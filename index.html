@@ -223,12 +223,6 @@ Aap meri life me ho, ye hi mere liye kaafi hai.
 <div class="rounded-3xl overflow-hidden shadow-lg"><img src="https://lh3.googleusercontent.com/u/0/d/19Pxv2xIjpnAfE4OZdC3isJvhLTGRV3Pa?auto=format&fit=crop&w=400" class="w-full"></div>
 <div class="rounded-3xl overflow-hidden shadow-lg"><img src="https://lh3.googleusercontent.com/u/0/d/1f2oAtWYbEkdQWep2wRS5jfD6HQri5PKx?auto=format&fit=crop&w=400" class="w-full"></div>
               
-              
-              
-              
-              
-          
-          
           </div>   
         </section> 
     </main>
@@ -261,7 +255,8 @@ Aap meri life me ho, ye hi mere liye kaafi hai.
 
     <script>
         const MOOD_API = 'https://script.google.com/macros/s/AKfycbxd7aNM8J_YXYiD9oedzKElv0Od5pdxwTZIyDtRf0j7lX8eq1BzxpwkVT5JHwwUQCW-/exec';
-        const CHAT_API = 'https://script.google.com/macros/s/AKfycbxvHEFSyOSwZAFwplYS1qIGpsWsbv7jxvXCZDmerDzEX6BPUeQr_gl09EL2EjksHxd26Q/exec';
+        // IMPORTANT: If your script URL changes after the new deployment, update it here!
+        const CHAT_API = 'https://script.google.com/macros/s/AKfycbzbBKil4sJOmJGG4_IE-UrrdcoQ-mmZYDpCw8iKqEWICSH54sgv0Ui5p_qWMZ1AM57tyQ/exec';
         const MY_PIN = "1001";
         let cheersInterval = null;
 
@@ -315,19 +310,48 @@ Aap meri life me ho, ye hi mere liye kaafi hai.
             }
         }
 
+        // --- UPDATED CHAT FUNCTION ---
         async function sendChatMessage() {
             const input = document.getElementById('chat-input');
             const messages = document.getElementById('chat-messages');
             const msg = input.value.trim();
             if (!msg) return;
+
+            // 1. Show the user's message immediately
             messages.innerHTML += `<div class="bg-slate-300 dark:bg-white/10 px-5 py-3 rounded-2xl rounded-br-none w-fit self-end ml-auto text-sm mb-2">${msg}</div>`;
             input.value = "";
             messages.scrollTop = messages.scrollHeight;
-            fetch(CHAT_API, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ "Date": new Date().toLocaleDateString(), "Time": new Date().toLocaleTimeString(), "Message": msg }) });
-            setTimeout(() => {
-                messages.innerHTML += `<div class="bg-black dark:bg-accentBlue text-white px-5 py-3 rounded-2xl rounded-bl-none w-fit text-sm mb-2 shadow-lg">Received! ❤️</div>`;
-                messages.scrollTop = messages.scrollHeight;
-            }, 800);
+
+            // 2. Show a temporary "Typing..." animation
+            const typingId = 'typing-' + Date.now();
+            messages.innerHTML += `<div id="${typingId}" class="bg-black dark:bg-accentBlue text-white px-5 py-3 rounded-2xl rounded-bl-none w-fit text-sm mb-2 shadow-lg opacity-70">Typing... ✍️</div>`;
+            messages.scrollTop = messages.scrollHeight;
+
+            try {
+                // 3. Send data to Google Apps Script
+                const response = await fetch(CHAT_API, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        "Date": new Date().toLocaleDateString(),
+                        "Time": new Date().toLocaleTimeString(),
+                        "Message": msg
+                    })
+                });
+
+                // 4. Get the smart reply from the script
+                const data = await response.json();
+
+                // 5. Remove "Typing..." and show the real reply
+                document.getElementById(typingId).remove();
+                messages.innerHTML += `<div class="bg-black dark:bg-accentBlue text-white px-5 py-3 rounded-2xl rounded-bl-none w-fit text-sm mb-2 shadow-lg">${data.reply}</div>`;
+
+            } catch (error) {
+                // Fallback if the internet drops
+                document.getElementById(typingId).remove();
+                messages.innerHTML += `<div class="bg-black dark:bg-accentBlue text-white px-5 py-3 rounded-2xl rounded-bl-none w-fit text-sm mb-2 shadow-lg">Network error, but your message is safe! ❤️</div>`;
+            }
+            
+            messages.scrollTop = messages.scrollHeight;
         }
 
         async function submitMood(val) {
@@ -377,7 +401,6 @@ Aap meri life me ho, ye hi mere liye kaafi hai.
                 document.getElementById('countdown').innerText = `${d}d ${h}h ${m}m ${s}s later ⌛❤️🎂`;
             } else {
                alert ("Happy Birthday Jiya 🎂🎂🎂 ");
-          //      document.getElementById('countdown').innerText = "Happy Birthday! 🎂✨❤️";
                 if (!cheersInterval) {
                     cheersInterval = setInterval(() => {
                         confetti({ particleCount: 50, angle: 60, spread: 55, origin: { x: 0 } });
@@ -394,4 +417,3 @@ Aap meri life me ho, ye hi mere liye kaafi hai.
     </script>
 </body>
 </html>
-
