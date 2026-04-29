@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Period Tracker</title>
+    <style>
+        :root {
+            --primary: #ff6b81;
+            --primary-light: #ffeef0;
+            --secondary: #70a1ff;
+            --dark: #2f3542;
+            --bg: #f1f2f6;
+            --white: #ffffff;
+            --shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--dark);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .privacy-badge {
+            font-size: 0.8rem;
+            background: #d1ccc0;
+            padding: 2px 10px;
+            border-radius: 20px;
+            color: var(--white);
+        }
+
+        /* Dashboard Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        h2 { font-size: 1.2rem; margin-top: 0; border-bottom: 2px solid var(--primary-light); padding-bottom: 10px; }
+
+        /* Form Styling */
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        /* Prediction Stats */
+        .stat-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: var(--primary-light);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .date-badge {
+            background: var(--primary);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 5px;
+        }
+
+        /* History Table */
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #eee; }
+
+        .tag {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .tag-flow { background: #ff4757; color: white; }
+        .tag-mood { background: var(--secondary); color: white; }
+
+        .empty-state { text-align: center; color: #a4b0be; padding: 20px; }
+
+        .reset-btn {
+            background: transparent;
+            color: #ff4757;
+            border: 1px solid #ff4757;
+            margin-top: 20px;
+            font-size: 0.8rem;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Period Tracker</h1>
+        <span class="privacy-badge">I care you, be happy ok </span>
+    </header>
+
+    <div class="grid">
+        <!-- Input Card -->
+        <div class="card">
+            <h2>Log Your Period</h2>
+            <form id="periodForm">
+                <div class="input-group">
+                    <label>Start Date</label>
+                    <input type="date" id="startDate" required>
+                </div>
+                <div class="input-group">
+                    <label>End Date (Optional)</label>
+                    <input type="date" id="endDate">
+                </div>
+                <div class="input-group">
+                    <label>Flow Intensity</label>
+                    <select id="flow">
+                        <option value="Light">Light</option>
+                        <option value="Medium" selected>Medium</option>
+                        <option value="Heavy">Heavy</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Main Mood</label>
+                    <select id="mood">
+                        <option value="Happy">Happy 😊</option>
+                        <option value="Tired">Tired 😴</option>
+                        <option value="Irritable">Irritable 😠</option>
+                        <option value="Crampy">Crampy 😖</option>
+                        <option value="Normal">Normal 😐</option>
+                    </select>
+                </div>
+                <button type="submit">Save Entry</button>
+            </form>
+        </div>
+
+        <!-- Prediction Card -->
+        <div class="card">
+            <h2>Cycle Insights</h2>
+            <div id="predictions">
+                <div class="stat-box">
+                    <span>Next Period</span>
+                    <span id="nextPeriodDate" class="date-badge">---</span>
+                </div>
+                <div class="stat-box" style="background: #eef2ff;">
+                    <span>Ovulation Day</span>
+                    <span id="ovulationDate" class="date-badge" style="background: var(--secondary);">---</span>
+                </div>
+                <div class="stat-box">
+                    <span>Avg Cycle Length</span>
+                    <span id="avgCycle" class="stat-value">28</span>
+                </div>
+                <div class="stat-box">
+                    <span>Status</span>
+                    <span id="statusText" style="font-weight: bold;">Logging Data...</span>
+                </div>
+            </div>
+            <p style="font-size: 0.8rem; color: #747d8c;">Fertile Window: <span id="fertileWindow">---</span></p>
+        </div>
+
+        <!-- History Card -->
+        <div class="card" style="grid-column: 1 / -1;">
+            <h2>Recent History</h2>
+            <div class="history-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Flow</th>
+                            <th>Mood/Symptom</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyBody">
+                        <!-- Data injected here -->
+                    </tbody>
+                </table>
+                <div id="emptyMsg" class="empty-state">No logs yet. Enter your last period to start tracking!</div>
+            </div>
+            <button class="reset-btn" onclick="clearData()">Clear All Data Permanently</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- DATA MANAGEMENT ---
+    let logs = JSON.parse(localStorage.getItem('periodLogs')) || [];
+
+    const form = document.getElementById('periodForm');
+    const historyBody = document.getElementById('historyBody');
+    const emptyMsg = document.getElementById('emptyMsg');
+
+    // UI Elements
+    const nextPeriodEl = document.getElementById('nextPeriodDate');
+    const ovulationEl = document.getElementById('ovulationDate');
+    const avgCycleEl = document.getElementById('avgCycle');
+    const statusEl = document.getElementById('statusText');
+    const fertileEl = document.getElementById('fertileWindow');
+
+    // --- LOGIC FUNCTIONS ---
+
+    function saveEntry(e) {
+        e.preventDefault();
+        
+        const entry = {
+            id: Date.now(),
+            start: document.getElementById('startDate').value,
+            end: document.getElementById('endDate').value,
+            flow: document.getElementById('flow').value,
+            mood: document.getElementById('mood').value
+        };
+
+        logs.push(entry);
+        // Sort logs by date
+        logs.sort((a, b) => new Date(b.start) - new Date(a.start));
+        
+        localStorage.setItem('periodLogs', JSON.stringify(logs));
+        form.reset();
+        updateUI();
+    }
+
+    function deleteEntry(id) {
+        logs = logs.filter(log => log.id !== id);
+        localStorage.setItem('periodLogs', JSON.stringify(logs));
+        updateUI();
+    }
+
+    function clearData() {
+        if(confirm("Delete all your tracking history permanently?")) {
+            localStorage.clear();
+            logs = [];
+            updateUI();
+        }
+    }
+
+    function calculateAverages() {
+        if (logs.length < 2) return 28; // Default
+
+        let totalDays = 0;
+        let gapCount = 0;
+
+        for (let i = 0; i < logs.length - 1; i++) {
+            const current = new Date(logs[i].start);
+            const previous = new Date(logs[i+1].start);
+            const diffTime = Math.abs(current - previous);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            // Standard cycles are usually 21-35 days. We include outliers but alert user.
+            totalDays += diffDays;
+            gapCount++;
+        }
+
+        return Math.round(totalDays / gapCount);
+    }
+
+    function formatDate(dateObj) {
+        return dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function updateUI() {
+        // Handle Empty State
+        if (logs.length === 0) {
+            historyBody.innerHTML = '';
+            emptyMsg.style.display = 'block';
+            nextPeriodEl.innerText = '---';
+            ovulationEl.innerText = '---';
+            return;
+        }
+
+        emptyMsg.style.display = 'none';
+        
+        // Render History
+        historyBody.innerHTML = logs.map(log => `
+            <tr>
+                <td>${log.start}</td>
+                <td>${log.end || '--'}</td>
+                <td><span class="tag tag-flow">${log.flow}</span></td>
+                <td><span class="tag tag-mood">${log.mood}</span></td>
+                <td><button onclick="deleteEntry(${log.id})" style="padding: 2px 8px; background: #dfe4ea; color: #2f3542;">&times;</button></td>
+            </tr>
+        `).join('');
+
+        // Perform Predictions
+        const avgCycle = calculateAverages();
+        avgCycleEl.innerText = avgCycle;
+
+        const lastStart = new Date(logs[0].start);
+        
+        // Next Period
+        const nextDate = new Date(lastStart);
+        nextDate.setDate(lastStart.getDate() + avgCycle);
+        nextPeriodEl.innerText = formatDate(nextDate);
+
+        // Ovulation (Approx 14 days before next period)
+        const ovulationDate = new Date(nextDate);
+        ovulationDate.setDate(nextDate.getDate() - 14);
+        ovulationEl.innerText = formatDate(ovulationDate);
+
+        // Fertile Window (5 days before + 1 day after ovulation)
+        const fertileStart = new Date(ovulationDate);
+        fertileStart.setDate(ovulationDate.getDate() - 5);
+        const fertileEnd = new Date(ovulationDate);
+        fertileEnd.setDate(ovulationDate.getDate() + 1);
+        fertileEl.innerText = `${formatDate(fertileStart)} to ${formatDate(fertileEnd)}`;
+
+        // Status Logic
+        const today = new Date();
+        const diffToNext = Math.ceil((nextDate - today) / (1000 * 60 * 60 * 24));
+        
+        if (diffToNext < 0) {
+            statusEl.innerText = "Overdue/Expected";
+            statusEl.style.color = "#ff4757";
+        } else if (diffToNext <= 3) {
+            statusEl.innerText = "Starting Soon!";
+            statusEl.style.color = "#ffa502";
+        } else {
+            statusEl.innerText = `${diffToNext} days left`;
+            statusEl.style.color = "#2ed573";
+        }
+    }
+
+    form.addEventListener('submit', saveEntry);
+    
+    // Initial Load
+    updateUI();
+</script>
+
+</body>
+</html>
